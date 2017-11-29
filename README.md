@@ -6,8 +6,6 @@
 
 This library is a Node wrapper for the Kik Bot API to help you develop a bot for [Kik Messenger][kik-url] in Node.js. To learn more about the Kik Bot platform check out [dev.kik.com][dev-kik-url] or follow the steps below to get started. 
 
-- Install with [`npm install @kikinteractive/kik`][npm-url]
-
 ## Contributing
 
 This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to bots@kik.com.
@@ -18,54 +16,41 @@ If you're looking to contribute to the `kik` package, check out the [Contributin
 
 Creating a basic Kik bot is simple:
 
-1. Let's start by installing the Kik Node Package using npm. If you're new to npm check out the getting started section [here](https://docs.npmjs.com/getting-started/what-is-npm). Otherwise just go ahead and run [`npm install @kikinteractive/kik`][npm-url].
+#### Create Your Bot on dev.kik.com
 
-2. Now it's time to set up your bot admin account. Download the Kik app on your phone and make an account if you don't already have one. Make sure you have access to the email you are using. 
+Go over to [dev.kik.com](https://dev.kik.com/#/home). 
 
-3. Once you have a Kik account, go to dev.kik.com and use your Kik app to scan the Kik code on the page. 
+![Scan The Kik Code][scan_the_code]
 
-<center> <img src="READMEImages/SS2.png" width="250"> </center>
+...and in Kik, hit the plus button in the top right corner and then hit 'scan a Kik code'.
 
-4. You'll now be in a chat with our bots manager, Botsworth! Botsworth will ask for your email. *THIS WILL BECOME YOUR ADMIN EMAIL* Make sure you have access to this email. 
+*(the above scan code is only an example, you must go to the [link above](https://dev.kik.com/#/home) for a valid scan code)*
 
-5. Open the email you just got from us and click confirm. 
+<p align="center">
+  <img width="600" height="600" src="READMEImages/scan-tutorial.gif">
+</p>
 
-6. Scan the code on your screen using your Kik app on your phone, the same way you did in step 2. Congratulations your bot admin account is now setup, you're almost there!
+Pointing your camera at the code will allow Kik to scan the code and introduce you to Botsworth, the bot maker bot. Follow the prompts to configure your bot.
 
-7. Continue the chat with Botsworth in the app and select a username for your bot. This will be the username users search for to find your bot. Try to keep it simple and easy to search. 
+Botsworth will ask you to give your bot a name which, is the first step. Choose wisely! Your bot should be cleverly and descriptively named - it should provide relatively clear indication as to the function of your bot. 
+*Hint: Avoid numbers and special characters in your bot's name.*
 
-8. Once you've done that, select yes to be logged in to the bot dashboard! This is where you will be managing everything about your bot including, approval process, stats and most importantly your API Key. You'll now need to fill in your contact information. Make sure this info is up to date as it is how the bot team will contact you during the approval process or if there is an issue with your bot. 
+Once you've chosen your bot's name, Botsworth will ask you to confirm, and will then log you into the Kik Bot Dashboard. 
+You will be prompted to agree to the [Kik API Terms of Use](https://engine.kik.com/#/terms). 
 
-9. Read and accept the terms of service and you are done! Congratulations on setting up your first bot. Now lets make it work with some Node.js 
+Next step: Setting up your development environment!
 
-## Your first echo bot
+## Setting up the NPM
 
-Alright it's time to make your first bot! This is just a simple echo bot that will respond with whatever message it gets sent. Before we get started youre going to need a couple of things. 
+Make sure you're running at least npm 2.2.1 and Node 8.0.0. We'll be using npm version 5.5.1 and Node version 8.9.0 today on Linux / MacOS X. 
 
-- Your User Name
-- Your API Key 
-- Your Webhook 
+Go ahead and open terminal and install the Kik Node Package: 
 
-### Your User Name and API Key 
+- Install with [`npm install @kikinteractive/kik`][npm-url]
 
-To get these all you have to do is go to your profile on [dev.kik.com][dev-kik-url]. You can get there by clicking on Congfiguration in the top navigation bar. Use your display name as your user name and your API Key is just under the API Key section. 
+#### Getting the Sample Code 
 
-## Your Web Hook 
-
-The slightly more complicated bit, you need some web address for kik to comunicate with your bot at. One good way to do this is using [ngrok](https://ngrok.com/). ngrok serves as a web tunnel from your local host to a public webhook that you can send to Kik to access your bot at. Simply download ngrok and follow the documentation to get it setup. 
-
-Now you want to go ahead and start ngrok on the same port that you will be running your echo bot. In a new terminal tab navigate to wherever you saved your ngrok file and run:
-
-- `./ngrok http 8000`
-
-youll now have a tunnel from your local server to a public address. You can find your webhook in the ngrok GUI that comes up next to the forwarding column. 
-
-<br>
-<center> <img src="READMEImages/SS3.png" width="700"> </center>
-<br>
-
-In this case mine was, http://741da835.ngrok.io go ahead and copy that address and paste into the baseUrl paramater in the bot initialization in the code below. 
-
+We're going to be using this sample javascript to create a basic echo bot. Go ahead and create a new .js file and name it 'MyFirstEchoBot.js'. Paste in the sample code below: 
 
 ```javascript
 'use strict';
@@ -79,9 +64,9 @@ let Bot  = require('@kikinteractive/kik');
 // We are first gonna create a new bot object with all of 
 // the information we just filled in on dev.kik.com
 let bot = new Bot({
-    username: 'nodesdktest1', // The username you gave BotsWorth on Kik 
-    apiKey: 'f9b8b1c6-7efd-4ad1-98d4-01d953378510', // The API Key you can find on your profile on dev.kik.com
-    baseUrl: 'http://741da835.ngrok.io' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
+    username: 'BOT_USERNAME_HERE', // The username you gave BotsWorth on Kik 
+    apiKey: 'BOT_API_KEY_HERE', // The API Key you can find on your profile on dev.kik.com
+    baseUrl: 'WEBHOOK_HERE' // THIS IS YOUR WEBHOOK! make sure this maches the web tunnel or host you have running 
 });
 
 // Send the configuration to kik to update the bot with the information above
@@ -99,6 +84,15 @@ bot.onTextMessage((message) => {
     console.log(message.body);
 });
 
+// We want to set up our start chatting message. This will be the first message the user gets when they start 
+// chatting with your bot. This message is only sent once. 
+bot.onStartChattingMessage((message) => {
+    bot.getUserProfile(message.from)
+        .then((user) => {
+            message.reply(`Hey ${user.firstName}! I'm your new echo bot. Send me a message and I'll send it right back!`);
+        });
+});
+
 // Set up your server and start listening
 let server = http
     .createServer(bot.incoming())
@@ -111,21 +105,134 @@ let server = http
 });
 ```
 
-Go ahead and save that code in your favourite text editor as echoBot.js. *MAKE SURE TO CHANGE ALL THE INFO TO MATCH YOURS* 
+Next step: Filling in your information 
 
-Thats it! Now you can run your echo bot on a local server, well be using port 8000. simply go into terminal and navigate to your echoBot.js file and run 
+#### How Bots Work
 
-- `node echoBot.js`
+Kik bots talk to the Kik infrastructure via HTTP requests: When sending a message, you send a request to us, and for messages to be received by your bot, 
+Kik will make requests to your endpoint. In other words, Kik must be able to call your URL on your web server.
 
-Congratulations on your first bot! Go into the Find People page from the + menu in your Kik app and search for your bot's username. Start a chat and watch it reply! 
+![Chat To Bot Flow Diagram][chat_bot_flow]
 
-### Notes 
 
-- While [ngrok](https://ngrok.com/) is great when starting out, when you want to scale your bot up you may want to look into a hosting service that will host your code for you. [Heroku]([ngrok](https://ngrok.com/)) is usually a good place to start looking. 
+#### Configuring Your Server
 
-- An Echo bot is just the start, Check out the full API documentation for more advanced uses.
 
-- Feel free to email us at bots@kik.com if you have any questions. 
+For our bot to work, we need to have an address that's accessible from the internet.  Many production Kik bots run in cloud based services such as [Heroku](https://www.heroku.com), [Google App Engine](https://cloud.google.com/appengine/) or [Amazon Web Services](https://aws.amazon.com) - or in their own data center infrastructure. 
+
+However, for development purposes you can use [ngrok](https://ngrok.com) to provide access to your bot running in your local network. Ngrok is easy to setup and use, and has [excellent documentation](https://ngrok.com/docs#expose). 
+
+[Ngrok](https://ngrok.com)  is a handy tool and service that allows you tunnel requests from the wide open Internet to your local machine when it's behind a NAT or firewall. It's commonly used to develop web services and webhooks. 
+
+If you're using [ngrok](https://ngrok.com), launch it now in a new terminal window:
+
+```
+$ ngrok http 8080
+```
+
+When it launches, you will see a screen similar to the following:
+
+```
+ngrok by @inconshreveable                                                                                                                                                                 (Ctrl+C to quit)
+                                                                                                                                                                                                          
+Session Status                online                                                                                                                                                                      
+Account                       A Bot Developer (Plan: Free)                                                                                                                                                 
+Version                       2.1.18                                                                                                                                                                      
+Region                        United States (us)                                                                                                                                                          
+Web Interface                 http://127.0.0.1:4040                                                                                                                                                       
+Forwarding                    http://ABCDEFG123.ngrok.io -> localhost:8080                                                                                                                                  
+Forwarding                    https://ABCDEFG123.ngrok.io -> localhost:8080                                                                                                                                 
+                                                                                                                                                                                                          
+Connections                   ttl     opn     rt1     rt5     p50     p90                                                                                                                                 
+                              0       0       0.00    0.00    0.00    0.00  
+```
+
+Note the "Forwarding" address (https://ABCDEFG123.ngrok.io), as this will become part of your 'webhook' address.
+
+#### Configuring Your Bot
+
+To get the bot running, you're going to need your bot's username, and the API key. This is all available from [dev.kik.com](https://dev.kik.com/#/engine). It will be similar to the following screenshot:
+
+![Bot Configuration Panel][bot_dashboard]
+
+Here you can set the display name and "profile picture" for your bot. You'll need to copy/paste your API key into the bot's source code.  
+
+We'll also need to set the webhook to the URL of your bot's "incoming messages" route on your web server. This is where Kik will send all the messages that users send to your bot. In the example code, the route for incoming messages is `/incoming`
+
+In your 'MyFirstEchoBot.js' file, change:
+```javascript
+let bot = new Bot({
+    username: 'BOT_USERNAME_HERE', 
+    apiKey: 'BOT_API_KEY_HERE', 
+    baseUrl: 'WEBHOOK_HERE'  
+});
+```
+
+so that your bot's username and your API key are passed to Kik API's Bot constructor. For example, if we named our bot `ademobot`, and according the bot configuration panel our API key is `5a888dcb-4c6e-1973-b15t-308e1854f0ba`, then we would change the above line to:
+
+```javascript
+let bot = new Bot({
+    username: 'ademobot', 
+    apiKey: '5a888dcb-4c6e-1973-b15t-308e1854f0ba', 
+    baseUrl: 'WEBHOOK_HERE'  
+});
+```
+
+Now for your webhook, Kik will send messages to this path upon receipt. So, if your web address is https://www.example.com then you'll set your webhook to https://www.example.com/incoming, as shown below. 
+
+```javascript
+let bot = new Bot({
+    username: 'ademobot', 
+    apiKey: '5a888dcb-4c6e-1973-b15t-308e1854f0ba', 
+    baseUrl: 'https://www.example.com/incoming'  
+});
+```
+
+If you're using [ngrok](https://ngrok.com) as shown above, you would set the webhook as follows:
+
+```javascript
+let bot = new Bot({
+    username: 'ademobot', 
+    apiKey: '5a888dcb-4c6e-1973-b15t-308e1854f0ba', 
+    baseUrl: 'https://ABCDEFG123.ngrok.io/incoming'  
+});
+```
+
+#### Launch Your Bot 
+
+once you've got your 'MyFirstEchoBot.js' file ready, were going to open up terminal and run our Node server. cd to the directory that you saved your '.js' file in.
+
+```bash
+$ cd MyFirstEchoBot
+```
+
+Start the bot by running the file as shown below:
+
+```bash
+$ node 'MyFirstEchoBot'.js
+ * server is listening on 8000
+```
+
+### Talking to the bot
+
+With your bot up and running, you'll be able to chat with it in Kik. New users can click on the magnifying glass in their messages list to search for your bot. Once found, they can click on "Start Chatting" to subscribe to your bot and start interacting!
+
+<p align="center">
+  <img width="800" height="800" src="READMEImages/talktothebot.gif">
+</p>
+
+## Getting Help
+
+Here are other resources for using Kik node:
+
+- [stackoverflow.com][stackoverflow-url] is a great place to get answers about building a Kik chat bot.
+- Go to [dev.kik.com][dev-kik-url] to get started building a bot, scan the code at dev.kik.com and talk to Botsworth.
+
+## License
+
+The Kik bot library is released under the terms of the MIT license. See [License](LICENSE.md) for more information or see https://opensource.org/licenses/MIT.
+
+## Additional Documentation
 
 ### Sending a message to a specific user
 
@@ -1304,13 +1411,9 @@ See https://dev.kik.com/#/docs/messaging#suggested-response-keyboard
 | picUrl | <code>string</code> |
 | metadata | <code>object</code> |
 
-## Getting Help
-
-Here are other resources for using Kik node:
-
-- [stackoverflow.com][stackoverflow-url] is a great place to get answers about building a Kik chat bot.
-- Go to [dev.kik.com][dev-kik-url] to get started building a bot, scan the code at dev.kik.com and talk to Botsworth.
-
-## License
-
-The Kik bot library is released under the terms of the MIT license. See [License](LICENSE.md) for more information or see https://opensource.org/licenses/MIT.
+[scan_the_code]: READMEImages/scan_kik_code.png
+[scan_tutorial]: READMEImages/scan-tutorial.gif
+[bot_dashboard]: READMEImages/botdashboard.png
+[chat_bot_flow]: READMEImages/chat_bot_flow.png
+[start_chatting]: READMEImages/start-chatting.png
+[talk_to_the_bot]: READMEImages/talktothebot.gif
