@@ -1411,7 +1411,6 @@ See https://dev.kik.com/#/docs/messaging#suggested-response-keyboard
 | picUrl | <code>string</code> |
 | metadata | <code>object</code> |
 
-
 [scan_the_code]: READMEImages/scan_kik_code.png
 [scan_tutorial]: READMEImages/scan-tutorial.gif
 [bot_dashboard]: READMEImages/botdashboard.png
